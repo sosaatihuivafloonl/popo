@@ -10,5 +10,5 @@ DB_USER = os.environ.get('DB_USER')
 DB_PASS = os.environ.get('DB_PASS')
 
 
-bot_token = os.getenv("BOT_TOKEN")
-chat_id = os.getenv("CHAT_ID")
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+CHAT_ID = os.getenv("CHAT_ID")

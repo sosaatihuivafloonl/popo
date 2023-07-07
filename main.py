@@ -7,7 +7,7 @@ from database.connection import engine
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import HTTPException
 import httpx
-from config import bot_token, chat_id
+
 
 
 model.Base.metadata.create_all(bind=engine)
@@ -33,7 +33,7 @@ app.add_middleware(
 
 
 
-async def send_telegram_message(bot_token: str, chat_id: str, message: str):
+async def send_telegram_message(bot_token: str, chat_id: str, message: str ):
     url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
     data = {
         "chat_id": chat_id,
@@ -46,7 +46,7 @@ async def send_telegram_message(bot_token: str, chat_id: str, message: str):
         response.raise_for_status()
         
 @app.post("/api/send-data")
-async def send_message_to_telegram(message: str):
+async def send_message_to_telegram(bot_token: str, chat_id: str, message: str):
     await send_telegram_message(bot_token, chat_id, message)
     return {"status": "Message sent successfully"}
 
