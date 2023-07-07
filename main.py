@@ -37,7 +37,7 @@ def create_user(
     try:
         existing_cart = db.query(Cart).filter_by(product_id=formData.product_id).first()
         if existing_cart:
-            return {"error:": "product_id already exists"}, 403
+            raise HTTPException(status_code=400, detail='product_id already exists')
         else:
             cartQuery = Cart(
 				product_id=formData.product_id, 
