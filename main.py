@@ -1,10 +1,12 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, status
 from sqlalchemy.orm import Session
 from database.connection import get_db
 from models.model import Cart
 from models import model
 from database.connection import engine
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.exceptions import HTTPException
+
 
 
 model.Base.metadata.create_all(bind=engine)
@@ -26,23 +28,29 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/test")
-async def get_test():
-    return "message: hello!"
 
-
-@app.post("/user")
-def create_user(db: Session = Depends(get_db)):
-    user = Cart(
-        product_id='232132131321', 
-        product_id_url='url://da1sd2313sadas',
-        target_username='url://dasdsz3323z15adas',
-        target_photo_url='url://daggd33sa777das',
-        item_photo_url='url://dasdd3s1asadas',
-        item_name='url://a31aaa',
-        item_price='url://12333121',
-        )
-    db.add(user)
-    db.commit()
-    db.refresh(user)
-    return user
+@app.post("/api/fetch_user_data")
+def create_user(
+    db: Session = Depends(get_db),
+    formData: model.CartRequestForm = Depends()
+    ):
+    try:
+        existing_cart = db.query(Cart).filter_by(product_id=formData.product_id).first()
+        if existing_cart:
+            return {"error:": "product_id already exists"}, 403
+        else:
+            cartQuery = Cart(
+				product_id=formData.product_id, 
+				product_id_url=formData.product_id_url,
+				target_username=formData.target_username,
+				target_photo_url=formData.target_photo_url,
+				item_photo_url=formData.item_photo_url,
+				item_name=formData.item_name,
+				item_price=formData.item_price,
+				)
+            db.add(cartQuery)
+            db.commit()
+            db.refresh(cartQuery)
+            return cartQuery
+    except HTTPException as e:
+        raise HTTPException(status_code=400, detail=e)
