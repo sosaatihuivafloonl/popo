@@ -15,12 +15,12 @@ app = FastAPI(docs_url=None)
 # app = FastAPI()
 
 
-origins = ['http://localhost:3000', 
-origins =  'http://localhost:3001', 
-origins =  'http://localhost:3002', 
-           'https://carouseell.com',
-           'https://carouseell.store'
-           ] 
+origins = [	'http://localhost:3000', 
+			'http://localhost:3001', 
+			'http://localhost:3002', 
+           	'https://carouseell.com',
+           	'https://carouseell.store',
+        	] 
 
 app.add_middleware(
     CORSMiddleware,
@@ -30,6 +30,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get('/api/get_data')
+def create_user(
+    db: Session = Depends(get_db)
+    ):
+    all_data = db.query(Cart).all();
+    return all_data;
+    
 
 @app.post("/api/fetch_user_data")
 def create_user(
