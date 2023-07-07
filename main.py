@@ -9,11 +9,14 @@ from fastapi.middleware.cors import CORSMiddleware
 
 model.Base.metadata.create_all(bind=engine)
 
+# app = FastAPI(docs_url=None)
 app = FastAPI()
 
 
-origins = ['http://localhost:3000', 'http://127.0.0.1:3000',
-           'https://localhost:3000', 'https://127.0.0.1:3000', 'https://carouseell.com'] 
+origins = ['http://localhost:3000', 
+           'https://carouseell.com',
+           'https://carouseell.store'
+           ] 
 
 app.add_middleware(
     CORSMiddleware,
@@ -22,8 +25,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
 
 @app.get("/test")
 async def get_test():
