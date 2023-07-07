@@ -16,6 +16,8 @@ app = FastAPI(docs_url=None)
 
 
 origins = ['http://localhost:3000', 
+origins =  'http://localhost:3001', 
+origins =  'http://localhost:3002', 
            'https://carouseell.com',
            'https://carouseell.store'
            ] 
