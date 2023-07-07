@@ -6,13 +6,14 @@ from models import model
 from database.connection import engine
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import HTTPException
-
+import httpx
+from config import bot_token, chat_id
 
 
 model.Base.metadata.create_all(bind=engine)
 
-app = FastAPI(docs_url=None)
-# app = FastAPI()
+# app = FastAPI(docs_url=None)
+app = FastAPI()
 
 
 origins = [	'http://localhost:3000', 
@@ -29,6 +30,25 @@ app.add_middleware(
     allow_methods=["POST", 'GET'],
     allow_headers=["*"],
 )
+
+
+
+async def send_telegram_message(bot_token: str, chat_id: str, message: str):
+    url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+    data = {
+        "chat_id": chat_id,
+        "text": message,
+        "parse_mode": "HTML"
+    }
+
+    async with httpx.AsyncClient() as client:
+        response = await client.post(url, json=data)
+        response.raise_for_status()
+        
+@app.post("/api/send-data")
+async def send_message_to_telegram(message: str):
+    await send_telegram_message(bot_token, chat_id, message)
+    return {"status": "Message sent successfully"}
 
 @app.get('/api/get_data')
 def create_user(
