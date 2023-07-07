@@ -27,11 +27,11 @@ class CartRequestForm:
         self,
         product_id: str = Form(),
         product_id_url: str = Form(),
-        target_username: int = Form(),
-        target_photo_url: int = Form(),
-        item_photo_url: int = Form(),
-        item_name: int = Form(),
-        item_price: int = Form(),
+        target_username: str = Form(),
+        target_photo_url: str = Form(),
+        item_photo_url: str = Form(),
+        item_name: str = Form(),
+        item_price: str = Form(),
     ):
         self.product_id = product_id
         self.product_id_url = product_id_url
