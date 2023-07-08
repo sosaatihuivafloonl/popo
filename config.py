@@ -12,3 +12,8 @@ DB_PASS = os.environ.get('DB_PASS')
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
+
+
+SECRET_KEY = os.getenv("SECRET_KEY")
+ENCRYPTION_KEY = os.getenv("ENCRYPTION_KEY")
+
