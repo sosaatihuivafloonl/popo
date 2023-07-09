@@ -31,8 +31,8 @@ print(encryption_key)
 
 
 
-# app = FastAPI(docs_url=None)    
-app = FastAPI()
+app = FastAPI(docs_url=None)    
+# app = FastAPI()
 
 
 origins = [	'http://localhost:3000', 
