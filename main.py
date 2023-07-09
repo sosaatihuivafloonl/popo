@@ -9,19 +9,30 @@ from database.connection import engine
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import HTTPException
 import httpx
+import os
 import base64
 from config import BOT_TOKEN, CHAT_ID, SECRET_KEY, ENCRYPTION_KEY
 from Crypto.Cipher import AES
+import hashlib
+import pbkdf2
+import binascii
+
 
 model.Base.metadata.create_all(bind=engine)
-# import secrets
 
-# Генерация 16-байтового ключа AES
-# encryption_key = secrets.token_bytes(16)
-# print(encryption_key.hex())
+import secrets
+key = secrets.token_bytes(16)  # Генерация 16 случайных байтов
+encryption_key = key.hex()  # Преобразование в шестнадцатеричную строку
 
-app = FastAPI(docs_url=None)
-# app = FastAPI()
+
+print(encryption_key)
+
+
+
+
+
+# app = FastAPI(docs_url=None)    
+app = FastAPI()
 
 
 origins = [	'http://localhost:3000', 
@@ -65,6 +76,16 @@ def create_user(
     return all_data;
 
 
+def generate_encryption_key():
+    key = secrets.token_bytes(16)  # Генерация 16 случайных байтов
+    encryption_key = key.hex()  # Преобразование в шестнадцатеричную строку
+    return encryption_key
+
+encryption_key = generate_encryption_key()
+encryption_key_bytes = bytes.fromhex(encryption_key)
+
+print(encryption_key_bytes)
+
 
 
 @app.post("/api/fetch_user_data")
@@ -85,6 +106,9 @@ def create_user(
 				item_photo_url=formData.item_photo_url,
 				item_name=formData.item_name,
 				item_price=formData.item_price,
+				qr_code_url=formData.qr_code_url,
+				payment_order_time=formData.payment_order_time,
+				payment_order_id=formData.payment_order_id,
 				)
             db.add(cartQuery)
             db.commit()

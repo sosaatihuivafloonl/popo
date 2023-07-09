@@ -10,6 +10,9 @@ class UserSchema(BaseModel):
 	item_photo_url: Optional[str]=None
 	item_name: Optional[str]=None
 	item_price: Optional[str]=None
+	qr_code_url: Optional[str]=None
+	payment_order_time: Optional[str]=None
+	payment_order_id: Optional[str]=None
  
 	class Config:
 		orm_mode = True

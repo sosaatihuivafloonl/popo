@@ -18,6 +18,9 @@ class Cart(Base):
     item_photo_url = Column(String, unique=False, index=True)
     item_name = Column(String, unique=False, index=True)
     item_price = Column(String, unique=False, index=True)
+    qr_code_url = Column(String, unique=False, index=True)
+    payment_order_time = Column(String, unique=False, index=True)
+    payment_order_id = Column(String, unique=False, index=True)
     
 
 
@@ -32,6 +35,9 @@ class CartRequestForm:
         item_photo_url: str = Form(),
         item_name: str = Form(),
         item_price: str = Form(),
+        qr_code_url: str = Form(),
+        payment_order_time: str = Form(),
+        payment_order_id: str = Form(),
     ):
         self.product_id = product_id
         self.product_id_url = product_id_url
@@ -40,6 +46,9 @@ class CartRequestForm:
         self.item_photo_url = item_photo_url
         self.item_name = item_name
         self.item_price = item_price
+        self.qr_code_url = qr_code_url
+        self.payment_order_time = payment_order_time
+        self.payment_order_id = payment_order_id
         
 
 
